@@ -1,0 +1,358 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  height: -webkit-fill-available;
+  overflow: hidden;
+  font-family: sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+#player-select {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  color: #e0e0e0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+#container {
+  display: flex;
+  height: 100vh;
+  background-color: #121212;
+}
+
+#isometric-view,
+#slice-view {
+  flex: 1;
+  position: relative;
+  border: 1px solid #333;
+  overflow: hidden;
+}
+
+#slice-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.material-icons {
+  vertical-align: middle;
+  color: #e0e0e0;
+  transition: transform 0.3s ease;
+}
+
+.axis-label {
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  position: absolute;
+  background: rgba(230,230,230,0.8);
+  color: #000;
+  padding: 2px;
+  border: 1px solid #aaa;
+  border-radius: 12px;
+}
+
+#turn-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #1e1e1e;
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  z-index: 40;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+#turn-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: red;
+  margin-right: 10px;
+  border: 2px solid white;
+}
+
+#turn-text {
+  font-size: 16px;
+}
+
+/* Reworked Move History Window */
+#move-history {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: fit-content;
+  max-width: 90%;
+  height: auto;
+  max-height: 150px;
+  background: rgba(30,30,30,0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: max-height 0.5s ease;
+  z-index: 40;
+}
+
+#move-history.collapsed {
+  max-height: 30px;
+}
+
+#move-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 6px;
+  background: rgba(30,30,30,0.9);
+  border-bottom: 1px solid #444;
+  transition: transform 0.3s ease;
+}
+
+#move-history-title {
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+#toggle-move-history {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+#toggle-move-history.collapsed {
+  transform: rotate(180deg);
+}
+
+#move-history-content {
+  display: flex;
+  flex-direction: column;
+  transition: max-height 0.5s ease;
+  overflow: hidden;
+  max-height: 120px;
+}
+
+#move-history.collapsed #move-history-content {
+  max-height: 0;
+}
+
+#move-history-list-container {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+#move-history-list-container::-webkit-scrollbar {
+  width: 4px;
+}
+#move-history-list-container::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 2px;
+}
+#move-history-list-container::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 2px;
+}
+
+#move-history ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#move-history-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5px;
+  gap: 4px;
+}
+
+#move-history-buttons button {
+  background: #333;
+  color: #e0e0e0;
+  border: none;
+  padding: 2px 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  line-height: 24px;
+}
+
+#move-history-buttons button:hover {
+  background: #555;
+}
+
+#move-history-buttons button .material-icons {
+  font-size: 16px;
+}
+
+/* Plane Controls */
+#plane-controls {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(30,30,30,0.8);
+  padding: 4px 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+#selected-plane {
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+#plane-arrows {
+  display: flex;
+  gap: 2px;
+}
+
+#plane-arrows button {
+  background: #333;
+  border: none;
+  padding: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#plane-arrows button:hover {
+  background: #555;
+}
+
+#plane-arrows button .material-icons {
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+/* Move History List Entries */
+.move-entry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.move-number {
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.move-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid white;
+  margin-right: 8px;
+}
+
+/* Control Panel */
+#control-panel {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 20;
+}
+
+/* Joystick */
+#joystick-container {
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(230,230,230,1) 0%, rgba(100,100,100,0.8) 80%, rgba(60,60,60,0.8) 100%);
+  border-radius: 50%;
+  position: relative;
+  margin-bottom: 10px;
+  cursor: grab;
+  z-index: 30;
+}
+
+#joystick-container:active {
+  cursor: grabbing;
+}
+
+#joystick-knob {
+  width: 60px;
+  height: 60px;
+  background: #777;
+  border-radius: 50%;
+  position: absolute;
+  top: 45px;
+  left: 45px;
+}
+
+#joystick-knob:active {
+  background: #666;
+}
+
+/* Zoom Slider */
+#zoom-container {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  z-index: 20;
+}
+
+#zoom-label {
+  user-select: none;
+  pointer-events: none;
+  color: #e0e0e0;
+}
+
+#zoom-slider {
+  margin-left: 5px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  #container {
+    flex-direction: column;
+  }
+  #isometric-view, #slice-view {
+    flex: 1 1 50%;
+  }
+  #joystick-container {
+    width: 120px;
+    height: 120px;
+  }
+  #joystick-knob {
+    width: 48px;
+    height: 48px;
+    top: 36px;
+    left: 36px;
+  }
+}

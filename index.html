@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Mobile-friendly meta tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>3D Infinite Connect 4 Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Example styling for self-play controls, consistent with other UI elements */
+    #self-play-controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 50;
+      background-color: #1e1e1e;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #self-play-controls button,
+    #self-play-controls input {
+      background-color: #1e1e1e;
+      color: #e0e0e0;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+    #self-play-controls input {
+      width: 70px;
+    }
+    /* Other styling remains unchanged */
+  </style>
+</head>
+<body>
+  <!-- Player selection overlay -->
+  <div id="overlay">
+    <div id="player-select">
+      <h2>Select Game Settings</h2>
+      <div>
+        <label for="num-players">Number of Players:</label>
+        <select id="num-players">
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+      <div>
+        <label for="win-length">Win Length:</label>
+        <select id="win-length">
+          <option value="4" selected>4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+        </select>
+      </div>
+      <button id="start-game">Start Game</button>
+    </div>
+  </div>
+  
+  <!-- Self-Play Controls (floating at top left) -->
+  <div id="self-play-controls">
+    <button id="self-play-button">Start Self-Play</button>
+    <!-- Minimum delay reduced to 10 ms -->
+    <input type="number" id="self-play-delay" value="1000" min="10" step="100" title="Delay in ms">
+    <button id="self-play-step" title="Step Move">Step</button>
+  </div>
+  
+  <div id="container">
+    <!-- 3D isometric view -->
+    <div id="isometric-view">
+      <!-- Turn indicator -->
+      <div id="turn-indicator">
+        <div id="turn-circle"></div>
+        <span id="turn-text">Player 1's turn</span>
+      </div>
+      <!-- Move history (floating at bottom left) -->
+      <div id="move-history">
+        <div id="move-history-header">
+          <span id="move-history-title">Move History</span>
+          <button id="toggle-move-history" title="Collapse Move History">
+            <i class="material-icons">keyboard_arrow_down</i>
+          </button>
+        </div>
+        <div id="move-history-content">
+          <div id="move-history-list-container">
+            <ul id="move-history-list"></ul>
+          </div>
+          <div id="move-history-buttons">
+            <button id="save-move-history" title="Save Move History">
+              <i class="material-icons">save</i>
+            </button>
+            <button id="load-move-history" title="Load Move History">
+              <i class="material-icons">folder_open</i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Control panel (joystick and zoom slider) -->
+      <div id="control-panel">
+        <div id="joystick-container">
+          <div id="joystick-knob"></div>
+        </div>
+        <div id="zoom-container">
+          <label id="zoom-label" for="zoom-slider" draggable="false">
+            <i class="material-icons">zoom_in</i>
+          </label>
+          <input type="range" id="zoom-slider" min="0.5" max="1" step="0.01" value="1">
+        </div>
+      </div>
+    </div>
+    <!-- 2D slice view -->
+    <div id="slice-view">
+      <canvas id="slice-canvas"></canvas>
+      <div id="plane-controls">
+        <span id="selected-plane">No plane selected</span>
+        <div id="plane-arrows">
+          <button id="plane-up" title="Increase plane">
+            <i class="material-icons">keyboard_arrow_up</i>
+          </button>
+          <button id="plane-down" title="Decrease plane">
+            <i class="material-icons">keyboard_arrow_down</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Hidden file input for loading move history -->
+  <input type="file" id="load-input" style="display:none" accept=".json">
+  
+  <!-- Include Three.js and game scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="gameLogic.js"></script>
+  <script src="main.js" type="module"></script>
+</body>
+</html>
